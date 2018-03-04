@@ -2,20 +2,14 @@
 
 require('dotenv').config();
 
-const WebSocket = require('ws');
+const BinanceRest = require('./services/BinanceRest');
+const BinanceWss = require('./services/BinanceWss');
 
-// const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
-const ws = new WebSocket('wss://stream.binance.com:9443/stream?streams=ltcusdt@ticker/ltcusdt@kline_1m');
+(async function () {
 
-ws.on('open', function open() {
-    console.log('open');
-});
+  const print = (msg) => console.log(`RECEIVED: ${JSON.stringify(msg)}`);
 
-ws.on('message', function incoming(data) {
-  console.log(data);
-});
+  let listenKey = await (new BinanceRest()).createListenKey();
+  await (new BinanceWss(listenKey, print)).start(print);
 
-
-
-
-
+})();
