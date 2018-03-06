@@ -10,8 +10,12 @@ const telegramBot = require('./services/telegramBot');
 
   const print = async (msg) => {
     if ('outboundAccountInfo' === msg.e) {
-      await telegramBot.sendMessage('Update account info is received');
-      console.log(`RECEIVED: ${JSON.stringify(msg.B)}`);
+      let arr = msg.B.filter(el => (el.f > 0 || el.l > 0));
+      await telegramBot.sendMessage('Update account info is received - ' + arr);
+      console.log(`RECEIVED: ${JSON.stringify(arr)}`);
+    } else if ('executionReport' === msg.e) {
+      await telegramBot.sendMessage(JSON.stringify(msg));
+      console.log(JSON.stringify(msg));
     }
   };
 
