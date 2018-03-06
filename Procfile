@@ -1,1 +1,1 @@
-worker: node ./src/robot.js
+worker: node ./main.js
