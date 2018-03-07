@@ -23,6 +23,6 @@ const telegramBot = require('./services/telegramBot');
   };
 
   let listenKey = await (new BinanceRest()).createListenKey();
-  await (new BinanceWss(listenKey, print)).start(print);
+  await (new BinanceWss(listenKey)).start(print);
 
 })();
