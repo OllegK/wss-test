@@ -6,6 +6,12 @@ const BinanceRest = require('./services/BinanceRest');
 const BinanceWss = require('./services/BinanceWss');
 const telegramBot = require('./services/telegramBot');
 
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
+eventEmitter.on('pingCount', () => {
+  console.log('ping count is received......................')
+});
+
 (async function () {
 
   const print = async (msg) => {
@@ -23,6 +29,6 @@ const telegramBot = require('./services/telegramBot');
   };
 
   let listenKey = await (new BinanceRest()).createListenKey();
-  await (new BinanceWss(listenKey)).start(print);
+  await (new BinanceWss(listenKey, eventEmitter)).start(print);
 
 })();

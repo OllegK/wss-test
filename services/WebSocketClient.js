@@ -2,9 +2,10 @@ const WebSocket = require('ws');
 
 // https://github.com/websockets/ws/wiki/Websocket-client-implementation-for-auto-reconnect
 
-function WebSocketClient() {
+function WebSocketClient(eventEmitter) {
   this.number = 0;	// Message number
   this.autoReconnectInterval = 2 * 1000;	// ms
+  this.eventEmitter = eventEmitter;
 }
 
 WebSocketClient.prototype.open = function (url) {
@@ -54,6 +55,7 @@ WebSocketClient.prototype.open = function (url) {
   }
   this.instance.on('pong', ()=> {
     this.pingCount -= 1;
+    this.eventEmitter.emit('pingCount');
     console.log('doing pong', this.pingCount);
   });
 }
