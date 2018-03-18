@@ -38,9 +38,10 @@ WebSocketClient.prototype.open = function (url) {
         break;
     }
   });
-  setInterval ( ()=> {
-    this.send('ping');
-  }, 5000);
+  setInterval(()=> this.instance.ping(), 5000);
+  this.instance.on('pong', ()=> {
+    console.log('pong');
+  });
 }
 
 WebSocketClient.prototype.send = function (data, option) {
