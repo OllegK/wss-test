@@ -38,9 +38,23 @@ WebSocketClient.prototype.open = function (url) {
         break;
     }
   });
-  setInterval(()=> this.instance.ping(), 5000);
+
+  if (!this.pingInterval) {
+    this.pingInterval = setInterval(()=> {
+      this.pingCount = (this.pingCount || 0) + 1;
+      console.log('doing ping', this.pingCount);
+      this.instance.ping((err)=>{
+      console.log('ping callback');
+      if (err) {
+        console.log('Error in ping callback')
+        console.log(err);
+        //todo: should we reconnect here
+      }
+    })}, 5000);
+  }
   this.instance.on('pong', ()=> {
-    console.log('pong');
+    this.pingCount -= 1;
+    console.log('doing pong', this.pingCount);
   });
 }
 
